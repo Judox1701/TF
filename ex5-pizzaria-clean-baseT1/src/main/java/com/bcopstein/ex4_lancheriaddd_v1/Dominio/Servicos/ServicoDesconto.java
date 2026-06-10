@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.Desconto;
-import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.Imposto;
 
 @Service
 public class ServicoDesconto {
@@ -17,11 +15,8 @@ public class ServicoDesconto {
     private Map<String, Desconto> regra;
     
     @Autowired
-    public ServicoDesconto(String desconto) {
-        this.desconto = desconto;
-
+    public ServicoDesconto() {
         this.regra = new HashMap<>();
-
         regra.put("Desconto 7%", new Desconto("Desconto 7%", valor -> valor * 0.07));
                 
     }

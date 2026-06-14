@@ -6,6 +6,7 @@ import java.util.List;
 public class Pedido {
     public enum Status {
         NOVO,
+        NEGADO,
         APROVADO,
         PAGO,
         AGUARDANDO,

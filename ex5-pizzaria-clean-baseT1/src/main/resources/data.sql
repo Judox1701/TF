@@ -66,3 +66,8 @@ INSERT INTO cardapio_produto (cardapio_id,produto_id) VALUES (1,3);
 
 INSERT INTO cardapio_produto (cardapio_id,produto_id) VALUES (2,1);
 INSERT INTO cardapio_produto (cardapio_id,produto_id) VALUES (2,3);
+
+-- Inserção dos pedidos
+INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (1, '9001', 1, 2); 
+INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (2, '9002', 2, 1); 
+INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (3, '9001', 3, 1); 

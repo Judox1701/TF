@@ -79,9 +79,11 @@ create table if not exists pedidos (
 
 create table if not exists pedido_item (
   pedido_id bigint not null,
+  cliente_cpf varchar(15) not null,
   produto_id bigint not null,
   quantidade int not null,
   primary key (pedido_id,produto_id),
   foreign key (pedido_id) references pedidos(id),
+  foreign key (cliente_cpf) references clientes(cpf),
   foreign key (produto_id) references produtos(id)
 );

@@ -68,6 +68,11 @@ INSERT INTO cardapio_produto (cardapio_id,produto_id) VALUES (2,1);
 INSERT INTO cardapio_produto (cardapio_id,produto_id) VALUES (2,3);
 
 -- Inserção dos pedidos
-INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (1, '9001', 1, 2); 
-INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (2, '9002', 2, 1); 
-INSERT INTO pedidos (id, cliente_cpf, produto_id, quantidade) VALUES (3, '9001', 3, 1); 
+INSERT INTO pedidos (cliente_cpf, status, valor, impostos, desconto, valor_cobrado, data_hora) VALUES ('9001', 'APROVADO', 11000.0, 1100.0, 770.0, 11330.0, '2026-01-15 10:00:00');
+INSERT INTO pedidos (cliente_cpf, status, valor, impostos, desconto, valor_cobrado, data_hora) VALUES ('9002', 'APROVADO', 6000.0, 600.0, 420.0, 6180.0, '2026-01-15 11:00:00');
+INSERT INTO pedidos (cliente_cpf, status, valor, impostos, desconto, valor_cobrado, data_hora) VALUES ('9001', 'APROVADO', 4000.0, 400.0, 280.0, 4120.0, '2026-01-15 12:00:00');
+
+-- Inserção dos itens dos pedidos
+INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (1, '9001', 1, 2);
+INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (2, '9002', 2, 1);
+INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (3, '9001', 3, 1);

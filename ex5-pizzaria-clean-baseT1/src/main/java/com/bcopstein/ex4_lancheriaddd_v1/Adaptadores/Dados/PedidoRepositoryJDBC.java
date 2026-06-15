@@ -55,8 +55,9 @@ public class PedidoRepositoryJDBC implements PedidoRepository {
         long pedidoId = key != null ? key.longValue() : 0L;
 
         for (ItemPedido item : pedido.getItens()) {
-            jdbcTemplate.update("INSERT INTO pedido_item (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)",
+            jdbcTemplate.update("INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (?, ?, ?, ?)",
                     pedidoId,
+                    pedido.getCliente().getCpf(),
                     item.getItem().getId(),
                     item.getQuantidade());
         }

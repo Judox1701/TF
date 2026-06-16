@@ -27,10 +27,10 @@ public class ServicoDesconto {
         this.regra = new HashMap<>();
 
         // desconto padrão
-        regra.put("1", new Desconto("1", (valor, qtd) -> valor * 0.10));
+        regra.put("1", new Desconto("1","Desconto base 10%." , (valor, qtd) -> valor * 0.10));
 
         // regra de 3 pedidos nos ultimos 20 dias
-        regra.put("2", new Desconto("2", (valor, qtdPedidos) -> {
+        regra.put("2", new Desconto("2","Desconto fidelidade 7% caso feito mais de 3 pedidos nos ultimos 20 dias." , (valor, qtdPedidos) -> {
         if (qtdPedidos > 3) {
             return valor * 0.07; // 7% de desconto
         } else {
@@ -42,7 +42,7 @@ public class ServicoDesconto {
     }
 
     public List<String> politicasDisponiveis() {
-        return regra.keySet().stream().sorted().collect(Collectors.toList());
+        return regra.values().stream().map(Desconto::getDesc).collect(Collectors.toList());
     }
 
     public void defineDescontoCorrente(String id) {
@@ -54,6 +54,11 @@ public class ServicoDesconto {
 
     public String getDescontoCorrente() {
         return descontoCorrente;
+    }
+
+    public String getDescricaoDescontoCorrente() {
+        Desconto desconto = regra.get(this.descontoCorrente);
+        return desconto != null ? desconto.getDesc() : "Nenhum desconto ativo";
     }
 
     public double calcular(Cliente cliente, double valorDaVenda) {

@@ -15,6 +15,6 @@ public class RecuperaDescontoCorrenteUC {
     }
 
     public String run() {
-        return servicoDesconto.getDescontoCorrente();
+        return servicoDesconto.getDescricaoDescontoCorrente();
     }
 }

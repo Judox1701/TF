@@ -7,8 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,15 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.ListarPedidosEntreguesUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.RecuperaListaPedidosUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.RecuperaStatusPedidoUC;
-import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.SubmeterPedidoParaAprovacaoUC;
-import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.Requests.PedidoRequest;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.Responses.PedidoResponse;
+import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.SubmeterPedidoParaAprovacaoUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.Pedido;
 
 @RestController
 @RequestMapping("/pedido")
 public class PedidoController {
-    private final SubmeterPedidoParaAprovacaoUC submeterPedidoUC;
     private final RecuperaStatusPedidoUC recuperaStatusPedidoUC;
     private final RecuperaListaPedidosUC recuperaListaPedidosUC;
     private final ListarPedidosEntreguesUC listarPedidosEntreguesUC;
@@ -33,27 +29,9 @@ public class PedidoController {
                             RecuperaStatusPedidoUC recuperaStatusPedidoUC,
                             RecuperaListaPedidosUC recuperaListaPedidosUC,
                             ListarPedidosEntreguesUC listarPedidosEntreguesUC) {
-        this.submeterPedidoUC = submeterPedidoUC;
         this.recuperaStatusPedidoUC = recuperaStatusPedidoUC;
         this.recuperaListaPedidosUC = recuperaListaPedidosUC;
         this.listarPedidosEntreguesUC = listarPedidosEntreguesUC;
-    }
-
-    @PostMapping("/submeter")
-    @CrossOrigin("*")
-    public PedidoResponse submeterPedido(@RequestBody PedidoRequest pedidoRequest) {
-        Pedido pedido = submeterPedidoUC.run(pedidoRequest);
-        return new PedidoResponse(
-                pedido.getId(),
-                pedido.getStatus().name(),
-                pedido.getDataHoraPagamento(),
-                pedido.getValor(),
-                pedido.getImpostos(),
-                pedido.getDesconto(),
-                pedido.getValorCobrado(),
-                pedido.getItens().stream()
-                        .map(item -> item.getItem().getDescricao() + " x" + item.getQuantidade())
-                        .toList());
     }
 
     @GetMapping("/status/{id}")

@@ -93,6 +93,13 @@ public class PedidoRepositoryJDBC implements PedidoRepository {
     }
 
     @Override
+    public Pedido atualiza(Pedido pedido) {
+        String sql = "UPDATE pedidos SET status = ? WHERE id = ?";
+        jdbcTemplate.update(sql, pedido.getStatus().name(), pedido.getId());
+        return pedido;
+    }
+
+    @Override
     public List<Pedido> recuperaPedidosEntreguesEntreDatas(LocalDate inicio, LocalDate fim) {
         String sql = "SELECT id, cliente_cpf, status, valor, impostos, desconto, valor_cobrado, data_hora " +
                 "FROM pedidos WHERE status = 'ENTREGUE' AND data_hora >= ? AND data_hora < ? ORDER BY data_hora DESC";

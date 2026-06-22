@@ -107,6 +107,39 @@ public class PedidoService {
         return pedidoRepository.recuperaPedido(id);
     }
 
+    public boolean cancelarPedido(long id) {
+        Pedido pedido = pedidoRepository.recuperaPedido(id);
+        if (pedido == null) {
+            return false;
+        }
+
+        if (pedido.getStatus() == Pedido.Status.ENTREGUE ||
+                pedido.getStatus() == Pedido.Status.TRANSPORTE ||
+                pedido.getStatus() == Pedido.Status.CANCELADO) {
+            return false;
+        }
+
+        if (pedido.getStatus() == Pedido.Status.APROVADO ||
+                pedido.getStatus() == Pedido.Status.PAGO ||
+                pedido.getStatus() == Pedido.Status.AGUARDANDO ||
+                pedido.getStatus() == Pedido.Status.PREPARACAO ||
+                pedido.getStatus() == Pedido.Status.PRONTO) {
+            for (ItemPedido item : pedido.getItens()) {
+                for (var ingrediente : item.getItem().getReceita().getIngredientes()) {
+                    ItemEstoque itemEstoque = estoqueRepository.recuperaItemEstoquePorIngrediente(ingrediente.getId());
+                    if (itemEstoque != null) {
+                        estoqueRepository.atualizaQuantidade(ingrediente.getId(),
+                                itemEstoque.getQuantidade() + item.getQuantidade());
+                    }
+                }
+            }
+        }
+
+        pedido.setStatus(Pedido.Status.CANCELADO);
+        pedidoRepository.atualiza(pedido);
+        return true;
+    }
+
     public List<Pedido> recuperaTodosPedidos() {
         return pedidoRepository.recuperaTodos();
     }

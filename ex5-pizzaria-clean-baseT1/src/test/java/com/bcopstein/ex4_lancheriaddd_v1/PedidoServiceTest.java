@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,7 +90,7 @@ class PedidoServiceTest {
         // Configurar comportamentos padrão dos mocks
         when(clientesRepository.recuperaClientePorCpf("12345678900")).thenReturn(cliente);
         when(produtosRepository.recuperaProdutoPorid(1L)).thenReturn(produto);
-        when(servicoDesconto.calcular(anyDouble())).thenReturn(0.0);
+        when(servicoDesconto.calcular(any(Cliente.class),anyDouble())).thenReturn(0.0);
         when(servicoImposto.calcular(anyDouble())).thenReturn(0.0);
     }
 
@@ -225,7 +227,7 @@ class PedidoServiceTest {
         // Cenário: Estoque suficiente e cálculos de preço
         ItemEstoque itemEstoque = new ItemEstoque(ingrediente, 10);
         when(estoqueRepository.recuperaItemEstoquePorIngrediente(1L)).thenReturn(itemEstoque);
-        when(servicoDesconto.calcular(5500.0)).thenReturn(385.0); // 7% de desconto
+        when(servicoDesconto.calcular(cliente, 5500.0)).thenReturn(385.0); // 7% de desconto
         when(servicoImposto.calcular(5500.0)).thenReturn(550.0);   // 10% de imposto
 
         // Criar pedido request

@@ -85,7 +85,7 @@ public class PedidoService {
                 .mapToDouble(item -> item.getItem().getPreco() * item.getQuantidade())
                 .sum();
         double impostos = servicoImposto.calcular(valor);
-        double desconto = servicoDesconto.calcular(valor);
+        double desconto = servicoDesconto.calcular(cliente, valor);
         double valorCobrado = valor + impostos - desconto;
 
         Pedido.Status status = estoqueOK ? Pedido.Status.APROVADO : Pedido.Status.NEGADO;

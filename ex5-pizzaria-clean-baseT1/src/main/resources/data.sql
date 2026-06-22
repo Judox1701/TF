@@ -73,6 +73,7 @@ INSERT INTO pedidos (cliente_cpf, status, valor, impostos, desconto, valor_cobra
 INSERT INTO pedidos (cliente_cpf, status, valor, impostos, desconto, valor_cobrado, data_hora) VALUES ('9001', 'APROVADO', 4000.0, 400.0, 280.0, 4120.0, '2026-01-15 12:00:00');
 
 -- Inserção dos itens dos pedidos
+-- Necessário criar o cliente_cpf para não dar erro na criação da classe PedidoRepository
 INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (1, '9001', 1, 2);
 INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (2, '9002', 2, 1);
 INSERT INTO pedido_item (pedido_id, cliente_cpf, produto_id, quantidade) VALUES (3, '9001', 3, 1);

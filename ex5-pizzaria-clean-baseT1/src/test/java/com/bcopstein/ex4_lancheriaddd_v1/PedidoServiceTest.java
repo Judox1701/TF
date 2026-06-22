@@ -76,7 +76,7 @@ class PedidoServiceTest {
         );
 
         // Preparar cliente padrão
-        cliente = new Cliente("12345678900", "João Silva", "11999999999", "Rua das Flores, 123", "joao@email.com");
+        cliente = new Cliente("12345678900", "João Silva", "11999999999", null, null, "Rua das Flores, 123", "joao@email.com");
 
         // Preparar ingrediente
         ingrediente = new Ingrediente(1L, "Queijo");

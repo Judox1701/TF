@@ -20,7 +20,7 @@ public class ClientesRepositoryJDBC implements ClientesRepository {
 
     @Override
     public Cliente recuperaClientePorCpf(String cpf) {
-        String sql = "SELECT cpf, nome, celular, endereco, email FROM clientes WHERE cpf = ?";
+        String sql = "SELECT cpf, nome, celular, usuario, senha, endereco, email FROM clientes WHERE cpf = ?";
         List<Cliente> clientes = jdbcTemplate.query(
                 sql,
                 ps -> ps.setString(1, cpf),
@@ -28,8 +28,22 @@ public class ClientesRepositoryJDBC implements ClientesRepository {
                         rs.getString("cpf"),
                         rs.getString("nome"),
                         rs.getString("celular"),
+                        rs.getString("usuario"),
+                        rs.getString("senha"),
                         rs.getString("endereco"),
                         rs.getString("email")));
         return clientes.isEmpty() ? null : clientes.get(0);
+    }
+
+    @Override
+    public Cliente salvaCliente(Cliente cliente) {
+        jdbcTemplate.update(
+                "INSERT INTO clientes (cpf, nome, celular, usuario, senha) VALUES (?, ?, ?, ?, ?)",
+                cliente.getCpf(),
+                cliente.getNome(),
+                cliente.getCelular(),
+                cliente.getUsuario(),
+                cliente.getSenha());
+        return cliente;
     }
 }

@@ -2,6 +2,7 @@ package com.bcopstein.ex4_lancheriaddd_v1.Adaptadores.Apresentacao;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +29,14 @@ public class DescontoController {
         this.recuperaDescontoCorrenteUC = recuperaDescontoCorrenteUC;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/lista")
     @CrossOrigin("*")
     public List<String> recuperaListaPoliticasDesconto() {
         return recuperaListaDescontosUC.run();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/definir/{id}")
     @CrossOrigin("*")
     public String definirPoliticaDescontoCorrente(@PathVariable(value = "id") String id) {

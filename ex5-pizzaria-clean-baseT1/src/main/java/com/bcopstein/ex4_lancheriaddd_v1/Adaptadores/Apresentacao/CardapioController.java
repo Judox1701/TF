@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class CardapioController {
         return cardapioPresenter;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/lista")
     @CrossOrigin("*")
     public List<CabecalhoCardapioPresenter> recuperaListaCardapios(){
@@ -59,6 +61,7 @@ public class CardapioController {
          return lstCardapios;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/definir/{id}")
     @CrossOrigin("*")
     public String definirCardapioCorrente(@PathVariable(value="id") long id){

@@ -17,6 +17,9 @@ import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.RecuperaStatusPedidoUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.Responses.PedidoResponse;
 import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.SubmeterPedidoParaAprovacaoUC;
 import com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades.Pedido;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.bcopstein.ex4_lancheriaddd_v1.Aplicacao.PagarPedidoUC;
 
 @RestController
 @RequestMapping("/pedido")
@@ -24,24 +27,28 @@ public class PedidoController {
     private final RecuperaStatusPedidoUC recuperaStatusPedidoUC;
     private final RecuperaListaPedidosUC recuperaListaPedidosUC;
     private final ListarPedidosEntreguesUC listarPedidosEntreguesUC;
+    private final PagarPedidoUC pagarPedidoUC;
 
     public PedidoController(SubmeterPedidoParaAprovacaoUC submeterPedidoUC,
                             RecuperaStatusPedidoUC recuperaStatusPedidoUC,
                             RecuperaListaPedidosUC recuperaListaPedidosUC,
-                            ListarPedidosEntreguesUC listarPedidosEntreguesUC) {
+                            ListarPedidosEntreguesUC listarPedidosEntreguesUC,
+                            PagarPedidoUC pagarPedidoUC) {
         this.recuperaStatusPedidoUC = recuperaStatusPedidoUC;
         this.recuperaListaPedidosUC = recuperaListaPedidosUC;
         this.listarPedidosEntreguesUC = listarPedidosEntreguesUC;
+        this.pagarPedidoUC = pagarPedidoUC;
     }
 
     @GetMapping("/status/{id}")
     @CrossOrigin("*")
-    public PedidoResponse recuperaStatusPedido(@PathVariable(value = "id") long id) {
+    public ResponseEntity<PedidoResponse> recuperaStatusPedido(@PathVariable(value = "id") long id) {
         Pedido pedido = recuperaStatusPedidoUC.run(id);
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido não encontrado: " + id);
+            return ResponseEntity.notFound().build(); 
         }
-        return new PedidoResponse(
+        
+        PedidoResponse response = new PedidoResponse(
                 pedido.getId(),
                 pedido.getStatus().name(),
                 pedido.getDataHoraPagamento(),
@@ -52,6 +59,8 @@ public class PedidoController {
                 pedido.getItens().stream()
                         .map(item -> item.getItem().getDescricao() + " x" + item.getQuantidade())
                         .toList());
+                        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/lista")
@@ -92,5 +101,21 @@ public class PedidoController {
                                 .map(item -> item.getItem().getDescricao() + " x" + item.getQuantidade())
                                 .toList()))
                 .toList();
+    }
+
+    // ENDPOINT DE PAGAMENTO (UC9)
+    @PostMapping("/{id}/pagar")
+    @CrossOrigin("*")
+    public ResponseEntity<String> pagarPedido(@PathVariable(value = "id") long id) {
+        try {
+            boolean sucesso = pagarPedidoUC.run(id);
+            if (sucesso) {
+                return ResponseEntity.ok("Pagamento aprovado! O pedido foi enviado para a cozinha.");
+            } else {
+                return ResponseEntity.badRequest().body("Não foi possível pagar este pedido. Verifique o ID.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

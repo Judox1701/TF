@@ -147,4 +147,16 @@ public class PedidoService {
     public List<Pedido> listarPedidosEntreguesEntreDatas(LocalDate inicio, LocalDate fim) {
         return pedidoRepository.recuperaPedidosEntreguesEntreDatas(inicio, fim);
     }
+
+    public Pedido confirmarPagamento(long id) {
+        Pedido pedido = pedidoRepository.recuperaPedido(id);
+        if (pedido == null || pedido.getStatus() != Pedido.Status.APROVADO) {
+            throw new IllegalArgumentException("Pedido não encontrado ou não aguarda pagamento.");
+        }
+        
+        pedido.setStatus(Pedido.Status.PAGO);
+        pedido.setDataHoraPagamento(LocalDateTime.now());
+        
+        return pedidoRepository.atualiza(pedido);
+    }
 }

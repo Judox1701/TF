@@ -4,6 +4,14 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  jpa:
+      hibernate:
+        ddl-auto: update  # Permite que o Hibernate ajuste as tabelas automaticamente
+      show-sql: true      # Útil para veres o SQL que o JPA está a gerar no terminal
+      properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.H2Dialect
   sql:
     init:
       mode: always   # executa schema.sql no boot

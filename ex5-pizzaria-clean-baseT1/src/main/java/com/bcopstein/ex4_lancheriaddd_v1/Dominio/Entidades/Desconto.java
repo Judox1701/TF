@@ -7,6 +7,7 @@ public class Desconto {
     private String desc;
     private BiFunction<Double,Integer,Double> calculaDesconto;
 
+
     public Desconto(String id, String descricao, BiFunction<Double,Integer,Double> calculo){
         this.identificador = id;
         this.desc = descricao;

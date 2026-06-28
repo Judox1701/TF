@@ -2,6 +2,7 @@ package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades;
 
 import java.util.List;
 
+
 public class Cardapio {
     private CabecalhoCardapio cabecalhoCardapio;
     private List<Produto> produtos;

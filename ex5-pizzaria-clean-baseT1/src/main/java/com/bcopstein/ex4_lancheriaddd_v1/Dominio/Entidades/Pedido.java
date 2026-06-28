@@ -2,7 +2,10 @@ package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "pedidos")
 public class Pedido {
     public enum Status {
         NOVO,
@@ -16,15 +19,28 @@ public class Pedido {
         TRANSPORTE,
         ENTREGUE
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_cpf", nullable = false)
     private Cliente cliente;
     private LocalDateTime dataHoraPagamento;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "pedido_id")
     private List<ItemPedido> itens;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
     private double valor;
     private double impostos;
     private double desconto;
     private double valorCobrado;
+
+    protected Pedido() {}
 
     public Pedido(long id, Cliente cliente, LocalDateTime dataHoraPagamento, List<ItemPedido> itens,
             Pedido.Status status, double valor, double impostos, double desconto, double valorCobrado) {

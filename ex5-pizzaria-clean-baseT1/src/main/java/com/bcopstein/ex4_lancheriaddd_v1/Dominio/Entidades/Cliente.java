@@ -1,6 +1,11 @@
 package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "clientes")
 public class Cliente {
+    @Id
     private String cpf;
     private String nome;
     private String celular;
@@ -8,6 +13,8 @@ public class Cliente {
     private String senha;
     private String endereco;
     private String email;
+
+    protected Cliente(){}
 
     public Cliente(String cpf, String nome, String celular, String usuario, String senha, String endereco, String email) {
         this.cpf = cpf;

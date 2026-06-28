@@ -1,10 +1,23 @@
 package com.bcopstein.ex4_lancheriaddd_v1.Dominio.Entidades;
 
+@Entity
+@Table(name = "produtos")
 public class Produto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String descricao;
+
+    @ManyToOne
+    @JoinTable(
+        name = "produto_receita",
+        joinColumns = @JoinColumn(name = "produto_id"),
+        inverseJoinColumns = @JoinColumn(name = "receita_id")
+    )
     private Receita receita;
     private int preco;
+
+    protected Produto() {}
 
     public Produto(long id,String descricao, Receita receita, int preco) {
         if (!Produto.precoValido(preco))
